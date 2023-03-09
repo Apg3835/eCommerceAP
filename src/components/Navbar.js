@@ -68,6 +68,10 @@ function Navbar() {
     navigate("/profile");
   };
 
+  const orderHistoryHandler = () => {
+    navigate("/orderHistory");
+  };
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
       <Container maxWidth="xl">
@@ -253,6 +257,11 @@ function Navbar() {
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography onClick={userProfileHandler} textAlign="center">
                   Profile
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography onClick={orderHistoryHandler} textAlign="center">
+                  Order History
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu}>

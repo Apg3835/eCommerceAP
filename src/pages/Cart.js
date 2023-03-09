@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { cartActions } from "../reducers/cartSlice";
@@ -6,14 +7,20 @@ import { cartActions } from "../reducers/cartSlice";
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [totalMerPrice, setTotalMerPrice] = useState(0);
+  const [totalAlbumPrice, setTotalalbumPrice] = useState(0);
+
   const cartBandMerchandise = useSelector(
     (state) => state.cart.cartBandMerchandise
   );
+
   const cartBandAlbums = useSelector((state) => state.cart.cartBandAlbums);
   console.log(cartBandAlbums);
+
   const incrementMerchandise = (merchandise) => {
     dispatch(cartActions.addMerchandiseToCart(merchandise));
   };
+
   const decrementMerchandise = (merchandise) => {
     dispatch(cartActions.removeMechandiseFromCart(merchandise));
   };
@@ -28,6 +35,43 @@ const Cart = () => {
   const storePageHandler = () => {
     navigate("/store");
   };
+
+  useEffect(() => {
+    if (cartBandMerchandise.length > 0) {
+      TotalAmountOfMerchandise();
+    }
+  }, [cartBandMerchandise]);
+
+  useEffect(() => {
+    if (cartBandAlbums.length > 0) {
+      TotalAmountOfAlbum();
+    }
+  }, [cartBandAlbums]);
+
+  const TotalAmountOfMerchandise = () => {
+    const totalAmountOfEachMerchandiseItem = cartBandMerchandise.map(
+      (merchandise) => {
+        return merchandise.quantity * merchandise.productPrice;
+      }
+    );
+    const total = totalAmountOfEachMerchandiseItem.reduce(
+      (previous, current) => {
+        return previous + current;
+      }
+    );
+    setTotalMerPrice(total);
+  };
+
+  const TotalAmountOfAlbum = () => {
+    const totalAmountOfEachAlbumItem = cartBandAlbums.map((album) => {
+      return album.quantity * album.albumPrice;
+    });
+    const total = totalAmountOfEachAlbumItem.reduce((previous, current) => {
+      return previous + current;
+    });
+    setTotalalbumPrice(total);
+  };
+
   return (
     <section className="h-100 h-custom" style={{ backgroundColor: "#d2c9ff" }}>
       <div className="container py-5 h-100">
@@ -46,7 +90,8 @@ const Cart = () => {
                           Shopping Cart
                         </h1>
                         <h6 className="mb-0 text-muted">
-                          {cartBandMerchandise.length}
+                          Total Items:-
+                          {cartBandMerchandise.length + cartBandAlbums.length}
                         </h6>
                       </div>
                       <hr className="my-4" />
@@ -86,6 +131,7 @@ const Cart = () => {
                           </div>
                           <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                             <h6 className="mb-0">
+                              ₹&nbsp;
                               {merchandise.quantity * merchandise.productPrice}
                             </h6>
                           </div>
@@ -96,6 +142,7 @@ const Cart = () => {
                           </div>
                         </div>
                       ))}
+                      <hr className="my-4" />
                       <h3 className="fw-bold mb-5 text-black">
                         {" "}
                         Official Music Album
@@ -126,7 +173,7 @@ const Cart = () => {
                           </div>
                           <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                             <h6 className="mb-0">
-                              {album.quantity * album.albumPrice}
+                              ₹&nbsp;{album.quantity * album.albumPrice}
                             </h6>
                           </div>
                           <div className="col-md-1 col-lg-1 col-xl-1 text-end">
@@ -154,18 +201,21 @@ const Cart = () => {
                   </div>
                   <div className="col-lg-4 bg-grey">
                     <div className="p-5">
-                      <h3 className="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                      <hr className="my-4" />
+                      <h3 className="fw-bold mb-5 mt-2 pt-1">Bill details</h3>
+                      {/* <hr className="my-4" /> */}
 
-                      <div className="d-flex justify-content-between mb-4">
-                        <h5 className="text-uppercase">items 3</h5>
+                      {/* <div className="d-flex justify-content-between mb-4">
+                        <h5 className="text-uppercase">
+                          items 3
+                        </h5>
                         <h5>€ 132.00</h5>
-                      </div>
+                      </div> */}
                       <hr className="my-4" />
                       <div className="d-flex justify-content-between mb-5">
-                        <h5 className="text-uppercase">Total price</h5>
-                        <h5>€ 137.00</h5>
+                        <h5 className="text-uppercase">Total amounts</h5>
+                        <h5>₹ {totalMerPrice + totalAlbumPrice} </h5>
                       </div>
+                      <hr className="my-4" />
 
                       <button
                         type="button"

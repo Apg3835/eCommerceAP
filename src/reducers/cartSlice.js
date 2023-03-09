@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getAlbumData, getMerchandiseData } from "./asyncDataReducer";
 const albums = [
   {
     id: "001",
@@ -149,11 +150,12 @@ const cartSlice = createSlice({
     bandMerchandise: merchandise,
     cartBandAlbums: [],
     cartBandMerchandise: [],
+    cartChanged: false,
   },
   reducers: {
     addMerchandiseToCart(state, action) {
       const merchandise = action.payload;
-      // console.log(merchandise);
+      state.cartChanged = true;
       const existingMerchandise = state.cartBandMerchandise.find(
         (item) => item.id === merchandise.id
       );
@@ -177,8 +179,9 @@ const cartSlice = createSlice({
       console.log(state.cartBandMerchandise);
     },
     removeMechandiseFromCart(state, action) {
+      state.cartChanged = true;
       const merchandise = action.payload;
-      if (merchandise.quantity > 2) {
+      if (merchandise.quantity > 1) {
         const merchandiseIdx = state.cartBandMerchandise.findIndex(
           (item) => item.id === merchandise.id
         );
@@ -193,6 +196,7 @@ const cartSlice = createSlice({
     },
     addAlbumsToCart(state, action) {
       const album = action.payload;
+      state.cartChanged = true;
 
       console.log(album);
       const existingAlbum = state.cartBandAlbums.find(
@@ -219,8 +223,9 @@ const cartSlice = createSlice({
     },
 
     remvoveAlbumsFromCart(state, action) {
+      state.cartChanged = true;
       const album = action.payload;
-      if (album.quantity > 2) {
+      if (album.quantity > 1) {
         const albumIdx = state.cartBandAlbums.findIndex(
           (item) => item.id === album.id
         );
@@ -234,7 +239,19 @@ const cartSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder.addCase(getMerchandiseData.fulfilled, (state, action) => {
+      const response = action.payload.merchandise;
+      state.cartBandMerchandise = response;
+      state.cartChanged = false;
+    });
+
+    builder.addCase(getAlbumData.fulfilled, (state, action) => {
+      const response = action.payload.album;
+      state.cartBandAlbums = response;
+      state.cartChanged = false;
+    });
+  },
 });
 export default cartSlice;
 export const cartActions = cartSlice.actions;
