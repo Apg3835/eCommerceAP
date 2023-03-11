@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AboutPage from "./pages/AboutPage";
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage, { ForgotPassword } from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import StorePage from "./pages/StorePage";
 import { getUserProfileAction } from "./reducers/asyncAuthReducer";
@@ -15,9 +15,12 @@ import OrderHistory from "./pages/OrderHistory";
 import {
   addAlbumAction,
   addMerchandiseAction,
+  addOrderHistoryAction,
   getAlbumData,
   getMerchandiseData,
+  getOrderHistoryData,
 } from "./reducers/asyncDataReducer";
+import FinalOrder from "./pages/FinalOrder";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -25,8 +28,13 @@ function App() {
     (state) => state.cart.cartBandMerchandise
   );
   const cartBandAlbums = useSelector((state) => state.cart.cartBandAlbums);
+  const cartOrderHistory = useSelector((state) => state.cart.orderList);
   const userData = useSelector((state) => state.auth.userProfileData);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserProfileAction());
+  }, []);
 
   useEffect(() => {
     if (cart.cartChanged) {
@@ -42,6 +50,12 @@ function App() {
           albumCart: cartBandAlbums,
         })
       );
+      dispatch(
+        addOrderHistoryAction({
+          userLocalId: userData.localId,
+          orderCart: cartOrderHistory,
+        })
+      );
     }
   }, [cart]);
 
@@ -52,6 +66,7 @@ function App() {
     if (userData) {
       dispatch(getMerchandiseData(userData.localId));
       dispatch(getAlbumData(userData.localId));
+      dispatch(getOrderHistoryData(userData.localId));
     }
   }, [userData]);
 
@@ -68,6 +83,8 @@ function App() {
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/updateProfile" element={<UpdateProfile />}></Route>
         <Route path="/orderHistory" element={<OrderHistory />}></Route>
+        <Route path="/thankyoupage" element={<FinalOrder />}></Route>
+        <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
       </Routes>
     </Fragment>
   );

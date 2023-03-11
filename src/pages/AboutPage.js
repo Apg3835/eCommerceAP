@@ -17,15 +17,15 @@ const AboutPage = () => {
         <div className={styles.column}>
           <div className={styles.card}>
             <img
-              src="https://github.com/parinit25/hello/blob/main/WhatsApp%20Image%202023-03-03%20at%209.13.26%20PM%20(1).jpeg?raw=true"
-              alt="Parinit Singh"
+              src="https://raw.githubusercontent.com/pankaj1098/Photos/a4ca32bcdd7dabb6f85e176d8ccaa8e4d3e338f5/IMG_20220619_180015.jpg?token=A3Q3H4HWXDEESCT35BQW3S3EBNMXI"
+              alt="Pankaj Yadav"
               className={styles.aboutPageImage}
             />{" "}
             <div className={styles.container}>
-              <h2>Parinit Singh</h2>
+              <h2>Pankaj Yadav</h2>
               <p className={styles.title}>Lead Singer</p>
               <p>Top International Singer</p>
-              <p>parinit.singh06@gmail.com</p>
+              <p>pankajyadav.ce@gmail.com</p>
               <p>
                 <button className={styles.button}>Contact</button>
               </p>

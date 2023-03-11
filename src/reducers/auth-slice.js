@@ -23,7 +23,7 @@ const authSlice = createSlice({
     builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
       const response = action.payload;
       state.userProfileData = response;
-      console.log(response);
+      // console.log(response);
     });
   },
 });

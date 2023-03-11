@@ -14,7 +14,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateProfileAction } from "../reducers/asyncAuthReducer";
+import {
+  getUserProfileAction,
+  updateProfileAction,
+} from "../reducers/asyncAuthReducer";
 
 const theme = createTheme();
 
@@ -33,14 +36,18 @@ export default function UpdateProfile() {
 
   const updateAccountHandeler = (e) => {
     e.preventDefault();
-    console.log("1", name, photoUrl);
+    // console.log("1", name, photoUrl);
     const updateAccount = {
       name: name,
       photoUrl: photoUrl,
     };
-    dispatch(updateProfileAction(updateAccount))
-    
-    console.log(updateAccount);
+    dispatch(updateProfileAction(updateAccount));
+
+    setTimeout(() => {
+      dispatch(getUserProfileAction());
+    }, 1000);
+
+    // console.log(updateAccount);
   };
 
   const profileClickHandler = () => {

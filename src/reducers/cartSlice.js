@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAlbumData, getMerchandiseData } from "./asyncDataReducer";
+import {
+  getAlbumData,
+  getMerchandiseData,
+  getOrderHistoryData,
+} from "./asyncDataReducer";
 const albums = [
   {
     id: "001",
@@ -151,6 +155,7 @@ const cartSlice = createSlice({
     cartBandAlbums: [],
     cartBandMerchandise: [],
     cartChanged: false,
+    orderList: [],
   },
   reducers: {
     addMerchandiseToCart(state, action) {
@@ -170,13 +175,13 @@ const cartSlice = createSlice({
           productDescription: merchandise.productDescription,
         });
       } else {
-        const existingMerchandiseIdx = state.cartBandMerchandise.findIndex(
-          (item) => item.id === existingMerchandise.id
-        );
+        // const existingMerchandiseIdx = state.cartBandMerchandise.findIndex(
+        //   (item) => item.id === existingMerchandise.id
+        // );
         existingMerchandise.quantity++;
         // existingMerchandise.productPrice += merchandise.productPrice;
       }
-      console.log(state.cartBandMerchandise);
+      // console.log(state.cartBandMerchandise);
     },
     removeMechandiseFromCart(state, action) {
       state.cartChanged = true;
@@ -198,7 +203,7 @@ const cartSlice = createSlice({
       const album = action.payload;
       state.cartChanged = true;
 
-      console.log(album);
+      // console.log(album);
       const existingAlbum = state.cartBandAlbums.find(
         (item) => item.id === album.id
       );
@@ -213,13 +218,13 @@ const cartSlice = createSlice({
           albumYear: album.albumYear,
         });
       } else {
-        const existingAlbumIdx = state.cartBandAlbums.findIndex(
-          (item) => item.id === existingAlbum.id
-        );
+        // const existingAlbumIdx = state.cartBandAlbums.findIndex(
+        //   (item) => item.id === existingAlbum.id
+        // );
         existingAlbum.quantity++;
         // existingMerchandise.productPrice += merchandise.productPrice;
       }
-      console.log(state.cartBandAlbums);
+      // console.log(state.cartBandAlbums);
     },
 
     remvoveAlbumsFromCart(state, action) {
@@ -238,6 +243,14 @@ const cartSlice = createSlice({
         );
       }
     },
+
+    orderNow(state, action) {
+      const response = action.payload;
+      // console.log(response);
+      state.orderList.push(response);
+      state.cartBandAlbums = [];
+      state.cartBandMerchandise = [];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getMerchandiseData.fulfilled, (state, action) => {
@@ -249,6 +262,12 @@ const cartSlice = createSlice({
     builder.addCase(getAlbumData.fulfilled, (state, action) => {
       const response = action.payload.album;
       state.cartBandAlbums = response;
+      state.cartChanged = false;
+    });
+
+    builder.addCase(getOrderHistoryData.fulfilled, (state, action) => {
+      const response = action.payload.order;
+      state.orderList = response;
       state.cartChanged = false;
     });
   },

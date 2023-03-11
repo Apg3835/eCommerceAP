@@ -17,12 +17,12 @@ const StorePage = () => {
 
   const addMerchandiseToCart = (merchandise) => {
     dispatch(cartActions.addMerchandiseToCart(merchandise));
-    console.log(merchandise);
+    // console.log(merchandise);
   };
 
   const addAlbumsClickHandler = (album) => {
     dispatch(cartActions.addAlbumsToCart(album));
-    console.log(album);
+    // console.log(album);
   };
 
   return (

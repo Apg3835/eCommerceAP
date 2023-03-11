@@ -14,7 +14,7 @@ class apiDataServices {
         }
       );
     } catch {
-      console.log("error in merchandise post");
+      // console.log("error in merchandise post");
     }
   };
 
@@ -27,7 +27,20 @@ class apiDataServices {
         }
       );
     } catch {
-      console.log("error in album post");
+      // console.log("error in album post");
+    }
+  };
+
+  postOrderHistoryData = async (data) => {
+    try {
+      const response = await axios.put(
+        `https://ecommerce-website-bff99-default-rtdb.firebaseio.com/${data.userLocalId}/order.json`,
+        {
+          order: data.orderCart,
+        }
+      );
+    } catch {
+      // console.log("error in orderHistory post");
     }
   };
 
@@ -38,7 +51,7 @@ class apiDataServices {
       );
       return response.data;
     } catch {
-      console.log("error in get merchandise data");
+      // console.log("error in get merchandise data");
     }
   };
 
@@ -49,7 +62,18 @@ class apiDataServices {
       );
       return response.data;
     } catch {
-      console.log("error in get merchandise data");
+      // console.log("error in get album data");
+    }
+  };
+
+  getOrderData = async (localId) => {
+    try {
+      const response = await axios.get(
+        `https://ecommerce-website-bff99-default-rtdb.firebaseio.com/${localId}/order.json`
+      );
+      return response.data;
+    } catch {
+      // console.log("error in get order data");
     }
   };
 }

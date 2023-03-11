@@ -56,6 +56,7 @@ function Navbar() {
   };
   const userLogoutHandler = () => {
     dispatch(authActions.userLogout());
+    navigate("/");
   };
   const storePageHandler = () => {
     navigate("/store");

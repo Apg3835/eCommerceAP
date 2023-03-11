@@ -11,8 +11,8 @@ import { useSelector } from "react-redux";
 export default function Profile() {
   const navigate = useNavigate();
   const userProfileData = useSelector((state) => state.auth.userProfileData);
-  const localid = userProfileData.localId;
-  console.log(localid);
+  // const localid = userProfileData.localId;
+  // console.log(localid);
 
   const updateprofileClickHandler = () => {
     navigate("/updateProfile");

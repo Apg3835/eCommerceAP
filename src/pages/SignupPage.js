@@ -105,7 +105,11 @@ export default function SignupPage() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link variant="body2" onClick={loginPageHandler}>
+                  <Link
+                    variant="body2"
+                    sx={{ cursor: "pointer" }}
+                    onClick={loginPageHandler}
+                  >
                     Existing Member ? Log-in Here
                   </Link>
                 </Grid>
